@@ -30,6 +30,7 @@ module.exports = {
         },
         background: {
           DEFAULT: '#202427',
+          light: '#2E3235',
         },
         success: {
           DEFAULT: '#5CD761',
