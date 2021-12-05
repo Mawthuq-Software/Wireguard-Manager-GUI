@@ -28,6 +28,14 @@ export default {
       validator: (value) => ['text', 'password'].includes(value),
       default: 'password',
     },
+    success: {
+      type: Boolean,
+      default: false,
+    },
+    error: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     classes() {
@@ -37,16 +45,19 @@ export default {
         'py-2': true,
         'px-4': true,
         border: true,
-        'border-background': true,
-        'focus:border-blue-500': true,
+        'border-background-light': !this.success && !this.error,
+        'border-green-500': this.success,
+        'border-red-500': this.error,
+        'focus:border-blue-500': !this.success && !this.error,
         'focus:outline-none': true,
-        'bg-background': true,
+        'bg-background-light': true,
+        'text-white': true,
       }
     },
   },
   methods: {
     inputData(evt) {
-      this.$emit('dataChange', evt)
+      this.$emit('data-change', evt.target.value)
     },
   },
 }
