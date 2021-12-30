@@ -26,6 +26,7 @@ export default {
     btnClasses() {
       return {
         ['bg-' + this.variant]: true,
+        ['hover:bg-' + this.variant+ '-dark']: true,
         'text-white': true,
         'text-sm': true,
         rounded: true,
