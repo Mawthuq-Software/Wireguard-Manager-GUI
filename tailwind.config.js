@@ -47,6 +47,9 @@ module.exports = {
           DEFAULT: '#C24444',
           translucent: '#C2444480',
         },
+        inactive: {
+          DEFAULT: '#BFBFBF'
+        }
       },
     },
   },
