@@ -31,6 +31,7 @@ module.exports = {
         background: {
           DEFAULT: '#202427',
           light: '#2E3235',
+          ultralight: '#424649',
         },
         success: {
           DEFAULT: '#5CD761',
@@ -54,6 +55,22 @@ module.exports = {
     },
   },
   variants: {
+    backgroundColor: [
+      'responsive',
+      'group-hover',
+      'first',
+      'last',
+      'odd',
+      'even',
+      'hover',
+      'focus',
+      'active',
+      'visited',
+      'disabled',
+    ],
+    borderRadius: ['first', 'last'],
+    borderStyle: ['first', 'last'],
+    borderWidth: ['first', 'last'],
     extend: {},
   },
   plugins: [],
