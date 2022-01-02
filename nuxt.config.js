@@ -44,7 +44,7 @@ export default {
         default: 'dark',
         values: [
           { name: 'white', value: '#ffffff' },
-          { name: 'dark', value: '#333333' },
+          { name: 'dark', value: '#202427' },
         ],
       },
     },
