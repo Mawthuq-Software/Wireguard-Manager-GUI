@@ -4,21 +4,20 @@
             <tbody>
                 <tr :class="headerClasses">
                     <th v-for="header in headers" :key="header">
-                        <td  :class="valueClass">
-                            {{header.text}}
+                        <td :class="valueClass">
+                            {{header}}
                         </td>
                     </th>
                 </tr>
                 <tr v-for="row in rows" :key="row" :class="rowClasses">
                     <td v-for="value in row" :key="value" :class="valueClass">
-                        {{value.text}}
+                        {{value}}
                     </td>
                     <div v-if="button.exists" :class="valueClass">
-                        <Button :label="button.label"/>
+                        <Button :label="button.label" @btn-click="modifyKey(row)"/>
                     </div>
                 </tr>
             </tbody>
-            <!-- <Row v-for="row in rows" :key="row" :values="row" :class="colorClass"/> -->
         </table>
     </div>
 </template>
@@ -32,15 +31,15 @@ export default {
     },
     props: { 
         headers: {
-            type: Object,
+            type: Array,
             default() { 
-                return {} 
+                return [] 
             }
         },
         rows: {
-            type: Object,
+            type: Array,
             default() { 
-                return {} 
+                return [] 
             }
         },
         button: {
@@ -72,6 +71,11 @@ export default {
                 'last:rounded': true,
             }
         },
-    }
+    },
+    methods: {
+        modifyKey(row) {
+           this.$emit('btn-click', row)
+        } 
+    },
 }
 </script>
