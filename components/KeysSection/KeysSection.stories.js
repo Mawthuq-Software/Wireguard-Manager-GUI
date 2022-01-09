@@ -1,11 +1,11 @@
 export default {
-  title: 'Wireguard-Manager-GUI/Atoms/Table',
+  title: 'Wireguard-Manager-GUI/Composites/KeysSection',
 }
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
-  template: '<Table v-bind="$props" />',
+  template: '<KeysSection v-bind="$props" />',
 })
 
 export const Primary = Template.bind({})
