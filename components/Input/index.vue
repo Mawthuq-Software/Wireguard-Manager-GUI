@@ -5,6 +5,7 @@
       :placeholder="placeholder"
       :class="classes"
       :type="type"
+      :disabled="disabled"
       @change="inputData"
     />
   </div>
@@ -25,7 +26,7 @@ export default {
     },
     type: {
       type: String,
-      validator: (value) => ['text', 'password'].includes(value),
+      validator: (value) => ['text', 'number', 'password'].includes(value),
       default: 'password',
     },
     success: {
@@ -33,6 +34,10 @@ export default {
       default: false,
     },
     error: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
