@@ -37,3 +37,12 @@ Error.args = {
   type: 'password',
   error: true,
 }
+
+export const Disabled = Template.bind({})
+Disabled.args = {
+  label: 'text',
+  placeholder: 'iasdiuwadsugdwads',
+  type: 'password',
+  error: false,
+  disabled: true,
+}
