@@ -3,6 +3,25 @@
     <div class="p-4">
       <div>
         <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-white float-right cursor-pointer"
+            @click="closeClicked"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <div class="pt-6">
           <Input
             :placeholder="privKey"
             :label="'Private Key'"
@@ -50,7 +69,7 @@
           @data-change="updateBW"
         />
       </div>
-      <div class="pt-8">
+      <div class="pt-8 pb-4">
         <Button :label="'Submit'" @btn-click="submit" />
       </div>
     </div>
@@ -106,7 +125,7 @@ export default {
       }
     },
     submit() {
-      if (this.bw === '') {
+      if (this.bw < 0 || this.bw === '') {
         this.bwFieldError = true
       } else {
         this.bwFieldError = false
@@ -127,7 +146,7 @@ export default {
         this.preKeyError = false
       }
       if (
-        this.bw !== '' &&
+        this.bw >= 0 &&
         this.privKey !== '' &&
         this.preKey !== '' &&
         this.pubKey !== ''
@@ -148,6 +167,9 @@ export default {
       return new Promise((resolve) => {
         setTimeout(resolve, ms)
       })
+    },
+    closeClicked() {
+      this.$emit('closeKeyGen')
     },
   },
 }
