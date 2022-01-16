@@ -17,12 +17,18 @@
         @btn-click="modifyKey"
       />
     </div>
+    <div :class="outerFormClass">
+      <div :class="keyFormClass">
+        <KeyGeneratorForm :key="keyID" @closeKeyGen="toggleForm" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import Button from '../Button'
 import Table from '../Table'
 import Input from '../Input'
+import KeyGeneratorForm from '../KeyGeneratorForm'
 
 export default {
   name: 'KeysSection',
@@ -30,6 +36,7 @@ export default {
     Button,
     Table,
     Input,
+    KeyGeneratorForm,
   },
   props: {
     rows: {
@@ -44,6 +51,8 @@ export default {
       headers: ['KeyID', 'ServerID', 'Private IP', 'Enabled', 'Edit'],
       button: { exists: true, label: 'Modify' },
       searchArray: [],
+      formOpen: false,
+      keyID: 10101,
     }
   },
   computed: {
@@ -52,6 +61,31 @@ export default {
         flex: true,
         'items-end': true,
         'place-content-between': true,
+      }
+    },
+    backgroundClass() {
+      return {}
+    },
+    keyFormClass() {
+      return {
+        'w-2/4': true,
+      }
+    },
+    outerFormClass() {
+      return {
+        fixed: true,
+        'left-0': true,
+        'right-0': true,
+        'top-0': true,
+        flex: true,
+        'items-center': true,
+        'justify-center': true,
+        'h-full': true,
+        'w-full': true,
+        'bg-black': true,
+        'bg-opacity-50': true,
+        visible: this.formOpen,
+        invisible: !this.formOpen,
       }
     },
   },
@@ -80,8 +114,18 @@ export default {
     },
     addKey() {
       this.$emit('add-key')
+      this.forceRerender()
+      this.formOpen = true
     },
-    modifyKey(row) {},
+    modifyKey(row) {
+      console.log(row)
+    },
+    toggleForm() {
+      this.formOpen = false
+    },
+    forceRerender() {
+      this.keyID += 1
+    },
   },
 }
 </script>
