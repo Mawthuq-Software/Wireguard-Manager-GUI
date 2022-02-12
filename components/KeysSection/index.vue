@@ -23,8 +23,8 @@
       </div>
     </div>
     <div :class="infoAlertClass">
-      <div class="w-3/4 ">
-        <Alert :label="infoLabel" :variant="infoType"/>
+      <div class="w-3/4">
+        <Alert :label="infoLabel" :variant="infoType" />
       </div>
     </div>
   </div>
@@ -43,14 +43,6 @@ export default {
     Input,
     KeyGeneratorForm,
   },
-  props: {
-    rows: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
-  },
   data() {
     return {
       headers: ['KeyID', 'Public Key', 'Private IP', 'Enabled', 'Edit'],
@@ -58,10 +50,10 @@ export default {
       searchArray: [],
       formOpen: false,
       keyID: 10101,
-      infoType: "danger",
-      infoLabel: "",
+      infoType: 'danger',
+      infoLabel: 'test',
       infoOpen: false,
-      dataRows: this.rows
+      dataRows: {},
     }
   },
   computed: {
@@ -111,11 +103,9 @@ export default {
         visible: this.infoOpen,
         invisible: !this.infoOpen,
       }
-    }
+    },
   },
   created() {
-    this.searchArray = this.rows
-    this.dataRows = this.rows
     this.getKeys()
   },
   methods: {
@@ -127,8 +117,8 @@ export default {
         this.searchArray = searchRows
       } else {
         for (let i = 0; i < searchRows.length; i++) {
-          for (let z = 0; z < searchRows[i].length; z++) {
-            const element = searchRows[i][z].toLowerCase()
+          for (const key in searchRows[i]) {
+            const element = searchRows[i][key].toString().toLowerCase()
             if (element.includes(search.toLowerCase())) {
               outputRows.push(searchRows[i])
               break
@@ -158,11 +148,10 @@ export default {
       })
     },
     async showBanner(type) {
-      if (type === "error"){
-        this.infoType = "danger"
-      }
-      else {
-        this.infoType = "success"
+      if (type === 'error') {
+        this.infoType = 'danger'
+      } else {
+        this.infoType = 'success'
       }
       this.infoOpen = true
       await this.sleep(3000)
@@ -172,42 +161,36 @@ export default {
       const serverURL = jsonVal.directAccess.url
       const serverAuth = jsonVal.directAccess.auth
       try {
-        const res = await this.$axios.get(
-          serverURL + '/manager/key',
-          {
-            headers: {
-              authorization: serverAuth,
-            },
-          }
-        )
+        const res = await this.$axios.get(serverURL + '/manager/key', {
+          headers: {
+            authorization: serverAuth,
+          },
+        })
 
         const response = res.data.Response
         const keys = res.data.Keys
         for (let i = 0; i < keys.length; i++) {
           delete keys[i].PresharedKey
         }
-        
         this.searchArray = keys
         this.dataRows = keys
 
         if (res.status === 202) {
-          this.showBanner("success")
+          this.showBanner('success')
           this.infoLabel = response
         }
       } catch (err) {
         if (err.response) {
           this.infoLabel = err.response.data.response
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
+          console.log(err.response.data)
+          console.log(err.response.status)
+          console.log(err.response.headers)
           console.log(err)
+        } else {
+          this.infoLabel = 'Unable to connect to server.'
         }
-        else {
-          this.infoLabel = "Unable to connect to server."
-        }
-        this.showBanner("error")
+        this.showBanner('error')
       }
-      // need to add functionality here
     },
   },
 }
