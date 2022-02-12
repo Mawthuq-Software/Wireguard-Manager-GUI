@@ -1,0 +1,8 @@
+{
+  "username": "anonymous",
+  "password": "johnny",
+  "directAccess": {
+    "url": "https://example.com:8443",
+    "auth": "ABCDEFG"
+  }
+}

@@ -73,12 +73,29 @@
         <Button :label="'Submit'" @btn-click="submit" />
       </div>
     </div>
+    <div :class="outerFormClass">
+      <div>
+        <KeyDownload
+          id="formID"
+          :config-props="dataObj"
+          @closeKeyGen="closeDownloadForm"
+        />
+      </div>
+    </div>
+    <div :class="infoAlertClass">
+      <div class="w-3/4 ">
+        <Alert :label="infoLabel" :variant="infoType"/>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import Input from '../Input'
 import Button from '../Button'
 import Dropdown from '../Dropdown'
+import KeyDownload from '../KeyDownload'
+import Alert from '../Alert'
+import jsonVal from '../../template.json'
 
 import {
   generatePresharedKey,
@@ -92,6 +109,8 @@ export default {
     Input,
     Button,
     Dropdown,
+    KeyDownload,
+    Alert
   },
   data() {
     return {
@@ -103,8 +122,49 @@ export default {
       pubKeyError: false,
       privKeyError: false,
       preKeyError: false,
+      formOpen: false,
+      formID: 123,
+      dataObj: {},
+      infoType: "danger",
+      infoLabel: "",
+      infoOpen: false,
     }
   },
+  computed: {
+    outerFormClass() {
+      return {
+        fixed: true,
+        'left-0': true,
+        'right-0': true,
+        'top-0': true,
+        flex: true,
+        'items-center': true,
+        'justify-center': true,
+        'h-full': true,
+        'w-full': true,
+        'bg-black': true,
+        'bg-opacity-50': true,
+        visible: this.formOpen,
+        invisible: !this.formOpen,
+      }
+    },
+    infoAlertClass() {
+      return {
+        fixed: true,
+        'items-center': true,
+        'justify-center': true,
+        'left-0': true,
+        'right-0': true,
+        'top-0': true,
+        'py-4': true,
+        'w-full': true,
+        flex: true,
+        visible: this.infoOpen,
+        invisible: !this.infoOpen,
+      }
+    }
+  },
+
   methods: {
     async genPubPrivKey() {
       for (let i = 0; i < 20; i++) {
@@ -151,14 +211,75 @@ export default {
         this.preKey !== '' &&
         this.pubKey !== ''
       ) {
-        this.$emit(
-          'data-change',
-          this.privKey,
-          this.pubKey,
-          this.preKey,
-          this.bw
-        )
+        // this.$emit(
+        //   'data-change',
+        //   this.privKey,
+        //   this.pubKey,
+        //   this.preKey,
+        //   this.bw
+        // )
+        this.apiCall()
       }
+    },
+    async apiCall() {
+      const serverURL = jsonVal.directAccess.url
+      const serverAuth = jsonVal.directAccess.auth
+      try {
+        const res = await this.$axios.post(
+          serverURL + '/manager/key',
+          {
+            publicKey: this.pubKey,
+            presharedKey: this.preKey,
+            bwLimit: Number(this.bw),
+            subExpiry: '2099-Oct-10 12:39:05 PM',
+            ipIndex: 0,
+          },
+          {
+            headers: {
+              authorization: serverAuth,
+            },
+          }
+        )
+        const allowedIPs = res.data.allowedIPs
+        const dns = res.data.dns
+        const ipAddress = res.data.ipAddress
+        const ipv4Address = res.data.ipv4Address
+        const ipv6Address = res.data.ipv6Address
+        const keyID = res.data.keyID
+        const listenPort = res.data.listenPort
+        const serverPublicKey = res.data.publicKey
+        const response = res.data.response
+
+        this.dataObj = {
+          privKey: this.privKey,
+          preKey: this.preKey,
+          allowedIPs,
+          dns,
+          ipAddress,
+          ipv4: ipv4Address,
+          ipv6: ipv6Address,
+          listenPort,
+          serverPub: serverPublicKey,
+        }
+        if (res.status === 202) {
+          this.formID++
+          this.formOpen = true
+          this.showBanner("success")
+          this.infoLabel = response
+        }
+      } catch (err) {
+        if (err.response) {
+          this.infoLabel = err.response.data.response
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        }
+        else {
+          this.infoLabel = "Unable to connect to server."
+        }
+        this.showBanner("error")
+      }
+      // need to add functionality here
     },
     updateBW(bw) {
       this.bw = bw
@@ -170,6 +291,20 @@ export default {
     },
     closeClicked() {
       this.$emit('closeKeyGen')
+    },
+    closeDownloadForm() {
+      this.formOpen = false
+    },
+    async showBanner(type) {
+      if (type === "error"){
+        this.infoType = "danger"
+      }
+      else {
+        this.infoType = "success"
+      }
+      this.infoOpen = true
+      await this.sleep(3000)
+      this.infoOpen = false
     },
   },
 }
