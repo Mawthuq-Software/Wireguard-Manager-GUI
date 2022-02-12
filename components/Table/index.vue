@@ -9,8 +9,8 @@
                         </td>
                     </th>
                 </tr>
-                <tr v-for="row in rows" :key="row" :class="rowClasses">
-                    <td v-for="value in row" :key="value" :class="valueClass">
+                <tr v-for="row in rows" :key="row[0]" :class="rowClasses">
+                    <td v-for="value in row" :key="value[0]" :class="valueClass">
                         {{value}}
                     </td>
                     <div v-if="button.exists" :class="valueClass">
