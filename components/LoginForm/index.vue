@@ -51,7 +51,7 @@ export default {
       this.password = pass
     },
     loginCall() {
-      // this needs to be programmed
+      this.$emit('login-click', this.username, this.password)
     },
   },
 }

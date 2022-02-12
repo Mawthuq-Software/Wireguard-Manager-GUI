@@ -22,6 +22,11 @@
         <KeyGeneratorForm :key="keyID" @closeKeyGen="toggleForm" />
       </div>
     </div>
+    <div :class="infoAlertClass">
+      <div class="w-3/4 ">
+        <Alert :label="infoLabel" :variant="infoType"/>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -29,7 +34,7 @@ import Button from '../Button'
 import Table from '../Table'
 import Input from '../Input'
 import KeyGeneratorForm from '../KeyGeneratorForm'
-
+import jsonVal from '../../template.json'
 export default {
   name: 'KeysSection',
   components: {
@@ -48,11 +53,15 @@ export default {
   },
   data() {
     return {
-      headers: ['KeyID', 'ServerID', 'Private IP', 'Enabled', 'Edit'],
+      headers: ['KeyID', 'Public Key', 'Private IP', 'Enabled', 'Edit'],
       button: { exists: true, label: 'Modify' },
       searchArray: [],
       formOpen: false,
       keyID: 10101,
+      infoType: "danger",
+      infoLabel: "",
+      infoOpen: false,
+      dataRows: this.rows
     }
   },
   computed: {
@@ -88,13 +97,30 @@ export default {
         invisible: !this.formOpen,
       }
     },
+    infoAlertClass() {
+      return {
+        fixed: true,
+        'items-center': true,
+        'justify-center': true,
+        'left-0': true,
+        'right-0': true,
+        'top-0': true,
+        'py-4': true,
+        'w-full': true,
+        flex: true,
+        visible: this.infoOpen,
+        invisible: !this.infoOpen,
+      }
+    }
   },
   created() {
     this.searchArray = this.rows
+    this.dataRows = this.rows
+    this.getKeys()
   },
   methods: {
     searchFunc(search) {
-      const searchRows = this.rows
+      const searchRows = this.dataRows
       const outputRows = []
 
       if (search === '') {
@@ -125,6 +151,63 @@ export default {
     },
     forceRerender() {
       this.keyID += 1
+    },
+    sleep(ms) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, ms)
+      })
+    },
+    async showBanner(type) {
+      if (type === "error"){
+        this.infoType = "danger"
+      }
+      else {
+        this.infoType = "success"
+      }
+      this.infoOpen = true
+      await this.sleep(3000)
+      this.infoOpen = false
+    },
+    async getKeys() {
+      const serverURL = jsonVal.directAccess.url
+      const serverAuth = jsonVal.directAccess.auth
+      try {
+        const res = await this.$axios.get(
+          serverURL + '/manager/key',
+          {
+            headers: {
+              authorization: serverAuth,
+            },
+          }
+        )
+
+        const response = res.data.Response
+        const keys = res.data.Keys
+        for (let i = 0; i < keys.length; i++) {
+          delete keys[i].PresharedKey
+        }
+        
+        this.searchArray = keys
+        this.dataRows = keys
+
+        if (res.status === 202) {
+          this.showBanner("success")
+          this.infoLabel = response
+        }
+      } catch (err) {
+        if (err.response) {
+          this.infoLabel = err.response.data.response
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          console.log(err)
+        }
+        else {
+          this.infoLabel = "Unable to connect to server."
+        }
+        this.showBanner("error")
+      }
+      // need to add functionality here
     },
   },
 }
