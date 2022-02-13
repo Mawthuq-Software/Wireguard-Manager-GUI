@@ -19,7 +19,11 @@
     </div>
     <div :class="outerFormClass">
       <div :class="keyFormClass">
-        <KeyGeneratorForm :key="keyID" @closeKeyGen="toggleForm" />
+        <KeyGeneratorForm
+          :key="keyID"
+          @closeKeyGen="toggleForm"
+          @successCreation="getKeys"
+        />
       </div>
     </div>
     <div :class="infoAlertClass">
