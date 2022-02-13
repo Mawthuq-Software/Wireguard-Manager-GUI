@@ -83,8 +83,8 @@
       </div>
     </div>
     <div :class="infoAlertClass">
-      <div class="w-3/4 ">
-        <Alert :label="infoLabel" :variant="infoType"/>
+      <div class="w-3/4">
+        <Alert :label="infoLabel" :variant="infoType" />
       </div>
     </div>
   </div>
@@ -110,7 +110,7 @@ export default {
     Button,
     Dropdown,
     KeyDownload,
-    Alert
+    Alert,
   },
   data() {
     return {
@@ -125,8 +125,8 @@ export default {
       formOpen: false,
       formID: 123,
       dataObj: {},
-      infoType: "danger",
-      infoLabel: "",
+      infoType: 'danger',
+      infoLabel: '',
       infoOpen: false,
     }
   },
@@ -162,7 +162,7 @@ export default {
         visible: this.infoOpen,
         invisible: !this.infoOpen,
       }
-    }
+    },
   },
 
   methods: {
@@ -264,20 +264,20 @@ export default {
         if (res.status === 202) {
           this.formID++
           this.formOpen = true
-          this.showBanner("success")
+          this.showBanner('success')
           this.infoLabel = response
+          this.successCreation()
         }
       } catch (err) {
         if (err.response) {
           this.infoLabel = err.response.data.response
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
+          console.log(err.response.data)
+          console.log(err.response.status)
+          console.log(err.response.headers)
+        } else {
+          this.infoLabel = 'Unable to connect to server.'
         }
-        else {
-          this.infoLabel = "Unable to connect to server."
-        }
-        this.showBanner("error")
+        this.showBanner('error')
       }
       // need to add functionality here
     },
@@ -295,12 +295,14 @@ export default {
     closeDownloadForm() {
       this.formOpen = false
     },
+    successCreation() {
+      this.$emit('successCreation')
+    },
     async showBanner(type) {
-      if (type === "error"){
-        this.infoType = "danger"
-      }
-      else {
-        this.infoType = "success"
+      if (type === 'error') {
+        this.infoType = 'danger'
+      } else {
+        this.infoType = 'success'
       }
       this.infoOpen = true
       await this.sleep(3000)
