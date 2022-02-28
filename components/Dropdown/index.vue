@@ -131,6 +131,7 @@ export default {
   methods: {
     clearClick() {
       this.selectedItem = ''
+      this.$emit('item-selected', this.selectedItem)
     },
     toggleDropdown() {
       this.dropdownHidden = !this.dropdownHidden
@@ -138,6 +139,7 @@ export default {
     selected(item) {
       this.selectedItem = item
       this.dropdownHidden = true
+      this.$emit('item-selected', this.selectedItem)
     },
   },
 }

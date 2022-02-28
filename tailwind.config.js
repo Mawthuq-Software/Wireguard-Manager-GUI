@@ -46,6 +46,7 @@ module.exports = {
         },
         danger: {
           DEFAULT: '#C24444',
+          dark: '#A92020',
           translucent: '#C2444480',
         },
         inactive: {

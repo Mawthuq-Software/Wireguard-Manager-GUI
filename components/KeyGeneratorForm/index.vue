@@ -112,6 +112,12 @@ export default {
     KeyDownload,
     Alert,
   },
+  props: {
+    serverID: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       privKey: '',
@@ -211,19 +217,16 @@ export default {
         this.preKey !== '' &&
         this.pubKey !== ''
       ) {
-        // this.$emit(
-        //   'data-change',
-        //   this.privKey,
-        //   this.pubKey,
-        //   this.preKey,
-        //   this.bw
-        // )
         this.apiCall()
       }
     },
     async apiCall() {
-      const serverURL = jsonVal.directAccess.url
-      const serverAuth = jsonVal.directAccess.auth
+      const server = this.serverID
+      if (server === '') {
+        return
+      }
+      const serverURL = jsonVal.directAccess[server].url
+      const serverAuth = jsonVal.directAccess[server].auth
       try {
         const res = await this.$axios.post(
           serverURL + '/manager/key',
@@ -249,7 +252,6 @@ export default {
         const listenPort = res.data.listenPort
         const serverPublicKey = res.data.publicKey
         const response = res.data.response
-
         this.dataObj = {
           privKey: this.privKey,
           preKey: this.preKey,
