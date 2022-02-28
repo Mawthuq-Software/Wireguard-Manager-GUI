@@ -2,7 +2,13 @@
   "username": "anonymous",
   "password": "johnny",
   "directAccess": {
-    "url": "https://example.com:8443",
-    "auth": "ABCDEFG"
+    "EU2": {
+      "url": "https://eu2.raspberrytech.one:8444",
+      "auth": "ABCDEFG"
+    },
+    "EU1": {
+      "url": "https://eu1.raspberrytech.one:8444",
+      "auth": "ABCDEFG"
+    }
   }
 }
