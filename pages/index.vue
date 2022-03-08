@@ -1,5 +1,5 @@
 <template>
-  <Tutorial/>
+  <KeysPage />
 </template>
 
 <script>
