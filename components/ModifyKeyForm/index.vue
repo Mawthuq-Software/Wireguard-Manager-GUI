@@ -58,7 +58,7 @@
 <script>
 import Input from '../Input'
 import Button from '../Button'
-import Dropdown from '../Dropdown'
+// import Dropdown from '../Dropdown'
 import Alert from '../Alert'
 import jsonVal from '../../template.json'
 
@@ -67,7 +67,7 @@ export default {
   components: {
     Input,
     Button,
-    Dropdown,
+    // Dropdown,
     Alert,
   },
   props: {

@@ -75,11 +75,13 @@
     </div>
     <div :class="outerFormClass">
       <div>
-        <KeyDownload
-          id="formID"
-          :config-props="dataObj"
-          @closeKeyGen="closeDownloadForm"
-        />
+        <no-ssr>
+          <KeyDownload
+            id="formID"
+            :config-props="dataObj"
+            @closeKeyGen="closeDownloadForm"
+          />
+        </no-ssr>
       </div>
     </div>
     <div :class="infoAlertClass">
@@ -92,7 +94,7 @@
 <script>
 import Input from '../Input'
 import Button from '../Button'
-import Dropdown from '../Dropdown'
+// import Dropdown from '../Dropdown'
 import KeyDownload from '../KeyDownload'
 import Alert from '../Alert'
 import jsonVal from '../../template.json'
@@ -108,7 +110,7 @@ export default {
   components: {
     Input,
     Button,
-    Dropdown,
+    // Dropdown,
     KeyDownload,
     Alert,
   },
@@ -248,7 +250,7 @@ export default {
         const ipAddress = res.data.ipAddress
         const ipv4Address = res.data.ipv4Address
         const ipv6Address = res.data.ipv6Address
-        const keyID = res.data.keyID
+        // const keyID = res.data.keyID
         const listenPort = res.data.listenPort
         const serverPublicKey = res.data.publicKey
         const response = res.data.response
