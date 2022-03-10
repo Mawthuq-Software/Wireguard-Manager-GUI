@@ -1,6 +1,4 @@
 {
-  "username": "anonymous",
-  "password": "johnny",
   "directAccess": {
     "EU2": {
       "url": "https://eu2.raspberrytech.one:8444",
