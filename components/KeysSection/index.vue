@@ -14,7 +14,9 @@
           @item-selected="updateServer"
         />
       </div>
-      <Button label="Add Key" @btn-click="addKey" />
+      <div>
+        <Button v-if="serverSelected != ''" label="Add Key" @btn-click="addKey"/>
+      </div>
     </div>
     <div class="pt-4">
       <Table
@@ -246,7 +248,7 @@ export default {
           },
         })
 
-        const response = res.data.Response
+        // const response = res.data.Response
         const keys = res.data.Keys
         for (let i = 0; i < keys.length; i++) {
           delete keys[i].PresharedKey
