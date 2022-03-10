@@ -1,6 +1,6 @@
 <template>
   <div class="bg-background h-full">
-    <div class="p-4">
+    <div class="p-8">
       <p class="text-white font-semibold text-4xl">Keys</p>
       <KeysSection />
     </div>
