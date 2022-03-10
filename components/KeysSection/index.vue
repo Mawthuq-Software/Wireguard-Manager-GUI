@@ -246,6 +246,7 @@ export default {
           headers: {
             authorization: serverAuth,
           },
+          timeout: 3000
         })
 
         // const response = res.data.Response
