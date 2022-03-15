@@ -21,6 +21,11 @@
             <line x1="9" y1="9" x2="15" y2="15"></line>
           </svg>
         </div>
+        <Dropdown
+          label="Server"
+          :items="servers"
+          @item-selected="serverSelection"
+        />
         <div class="pt-6">
           <Input
             :placeholder="privKey"
@@ -57,9 +62,7 @@
           <Button :label="'Generate new key'" @btn-click="genPreKey" />
         </div>
       </div>
-      <!-- <div class="pt-4">
-        <Dropdown label="Server" />
-      </div> -->
+      
       <div class="pt-4">
         <Input
           :placeholder="'(0 to disable)'"
@@ -114,12 +117,6 @@ export default {
     KeyDownload,
     Alert,
   },
-  props: {
-    serverID: {
-      type: String,
-      default: '',
-    },
-  },
   data() {
     return {
       privKey: '',
@@ -136,6 +133,8 @@ export default {
       infoType: 'danger',
       infoLabel: '',
       infoOpen: false,
+      servers: [],
+      serverSelected: '',
     }
   },
   computed: {
@@ -172,6 +171,9 @@ export default {
       }
     },
   },
+  created() {
+    this.getServers()
+  },
 
   methods: {
     async genPubPrivKey() {
@@ -193,6 +195,9 @@ export default {
       }
     },
     submit() {
+      if (this.serverSelected === '') {
+        return
+      }
       if (this.bw < 0 || this.bw === '') {
         this.bwFieldError = true
       } else {
@@ -223,7 +228,7 @@ export default {
       }
     },
     async apiCall() {
-      const server = this.serverID
+      const server = this.serverSelected
       if (server === '') {
         return
       }
@@ -312,6 +317,14 @@ export default {
       await this.sleep(3000)
       this.infoOpen = false
     },
+    getServers() {
+      for (const key in jsonVal.directAccess) {
+        this.servers.push(key)
+      }
+    },
+    serverSelection(server) {
+      this.serverSelected = server
+    }
   },
 }
 </script>

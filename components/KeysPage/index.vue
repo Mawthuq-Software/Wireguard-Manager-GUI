@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-background h-full">
+  <div class="bg-background h-screen overflow-auto">
     <div class="p-8">
       <p class="text-white font-semibold text-4xl">Keys</p>
       <KeysSection />

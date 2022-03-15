@@ -9,13 +9,13 @@
       />
       <div class="w-60">
         <Dropdown
-          label="Server"
+          label="Server Filter"
           :items="servers"
-          @item-selected="updateServer"
+          @item-selected="serverFilter"
         />
       </div>
       <div>
-        <Button v-if="serverSelected != ''" label="Add Key" @btn-click="addKey"/>
+        <Button label="Add Key" @btn-click="addKey" />
       </div>
     </div>
     <div class="pt-4">
@@ -29,7 +29,7 @@
     <div :class="outerFormClass">
       <div :class="keyFormClass">
         <KeyGeneratorForm
-          :key="keyID"
+          :key="keyPropID"
           :server-i-d="serverSelected"
           @closeKeyGen="toggleForm"
           @successCreation="getKeys"
@@ -39,7 +39,7 @@
     <div :class="outerModifyFormClass">
       <div :class="modifyFormClass">
         <ModifyKeyForm
-          :server-i-d="serverSelected"
+          :server-i-d="currentServerID"
           :key-i-d="currentKeyID"
           :key-enabled="keyEnabled"
           @closeKeyGen="toggleModifyForm"
@@ -58,8 +58,8 @@
 import Button from '../Button'
 import Table from '../Table'
 import Input from '../Input'
-import KeyGeneratorForm from '../KeyGeneratorForm'
 import Dropdown from '../Dropdown'
+import KeyGeneratorForm from '../KeyGeneratorForm'
 import ModifyKeyForm from '../ModifyKeyForm'
 import jsonVal from '../../template.json'
 
@@ -70,23 +70,31 @@ export default {
     Table,
     Input,
     KeyGeneratorForm,
-    Dropdown,
     ModifyKeyForm,
+    Dropdown
   },
   data() {
     return {
-      headers: ['KeyID', 'Public Key', 'Private IP', 'Enabled', 'Edit'],
+      headers: [
+        'KeyID',
+        'ServerID',
+        'Public Key',
+        'Private IP',
+        'Enabled',
+        'Edit',
+      ],
       button: { exists: true, label: 'Modify' },
       searchArray: [],
       formOpen: false,
       modifyFormOpen: false,
-      keyID: 10101,
+      keyPropID: 10101,
       infoType: 'danger',
       infoLabel: 'test',
       infoOpen: false,
-      dataRows: {},
+      dataRows: [],
       serverSelected: '',
       servers: [],
+      currentServerID: '',
       currentKeyID: '',
       keyEnabled: '',
     }
@@ -166,6 +174,7 @@ export default {
   },
   created() {
     this.getServers()
+    this.getKeys()
   },
   methods: {
     searchFunc(search) {
@@ -187,17 +196,31 @@ export default {
         this.searchArray = outputRows
       }
     },
-    addKey() {
-      if (this.serverSelected === '') {
-        return
+    serverFilter(server) {
+      const searchRows = this.dataRows
+      const outputRows = []
+
+      if (server === '') {
+        this.searchArray = searchRows
+      } else {
+        for (let i = 0; i < searchRows.length; i++) {
+          if (searchRows[i][1] === server) {
+            outputRows.push(searchRows[i])
+          }
+        }
+        this.searchArray = outputRows
       }
+    },
+    addKey() {
       this.$emit('add-key')
       this.forceRerender()
       this.formOpen = true
     },
     modifyKey(row) {
-      this.currentKeyID = row.KeyID
-      this.keyEnabled = row.Enabled
+      // Hard code the array values as we know the positison
+      this.currentKeyID = row[0]
+      this.currentServerID = row[1]
+      this.keyEnabled = row[4]
       this.modifyFormOpen = true
     },
     toggleForm() {
@@ -207,7 +230,7 @@ export default {
       this.modifyFormOpen = false
     },
     forceRerender() {
-      this.keyID += 1
+      this.keyPropID += 1
     },
     sleep(ms) {
       return new Promise((resolve) => {
@@ -224,53 +247,56 @@ export default {
       await this.sleep(3000)
       this.infoOpen = false
     },
-    updateServer(server) {
-      this.serverSelected = server
-      this.getKeys()
-    },
     getServers() {
       for (const key in jsonVal.directAccess) {
         this.servers.push(key)
       }
     },
     async getKeys() {
-      const server = this.serverSelected
-      if (server === '') {
-        return
-      }
       this.searchArray = []
-      const serverURL = jsonVal.directAccess[server].url
-      const serverAuth = jsonVal.directAccess[server].auth
-      try {
-        const res = await this.$axios.get(serverURL + '/manager/key', {
-          headers: {
-            authorization: serverAuth,
-          },
-          timeout: 3000
-        })
+      const keysArray = []
 
-        // const response = res.data.Response
-        const keys = res.data.Keys
-        for (let i = 0; i < keys.length; i++) {
-          delete keys[i].PresharedKey
+      for (let i = 0; i < this.servers.length; i++) {
+        const server = this.servers[i]
+        if (server === '') {
+          return
         }
-        this.searchArray = keys
-        this.dataRows = keys
+        const serverURL = jsonVal.directAccess[server].url
+        const serverAuth = jsonVal.directAccess[server].auth
+        try {
+          const res = await this.$axios.get(serverURL + '/manager/key', {
+            headers: {
+              authorization: serverAuth,
+            },
+            timeout: 3000,
+          })
 
-        // if (res.status === 202) {
+          // const response = res.data.Response
+          const keys = res.data.Keys
 
-        // }
-      } catch (err) {
-        if (err.response) {
-          this.infoLabel = err.response.data.response
-          console.log(err.response.data)
-          console.log(err.response.status)
-          console.log(err.response.headers)
-          console.log(err)
-        } else {
-          this.infoLabel = 'Unable to connect to server.'
+          for (let j = 0; j < keys.length; j++) {
+            delete keys[j].PresharedKey
+            const singleKeyArr = Object.values(keys[j])
+            singleKeyArr.splice(1, 0, server)
+            keysArray.push(singleKeyArr)
+          }
+
+          this.searchArray = keysArray
+          this.dataRows = keysArray
+          // if (res.status === 202) {
+
+          // }
+        } catch (err) {
+          if (err.response) {
+            this.infoLabel = err.response.data.response
+            console.log(err.response.data)
+            console.log(err.response.status)
+            console.log(err.response.headers)
+          } else {
+            this.infoLabel = 'Unable to connect to server.'
+          }
+          this.showBanner('error')
         }
-        this.showBanner('error')
       }
     },
   },
