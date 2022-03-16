@@ -28,7 +28,7 @@
         />
         <div class="pt-6">
           <Input
-            :placeholder="privKey"
+            :placeholder="shownPriv"
             :label="'Private Key'"
             :type="'text'"
             :error="privKeyError"
@@ -44,14 +44,9 @@
             :disabled="true"
           />
         </div>
-        <div class="pt-4">
-          <Button :label="'Generate new key'" @btn-click="genPubPrivKey" />
-        </div>
-      </div>
-      <div class="pt-4">
-        <div>
+        <div class="pt-2">
           <Input
-            :placeholder="preKey"
+            :placeholder="shownPre"
             :label="'Preshared Key'"
             :type="'text'"
             :error="preKeyError"
@@ -59,11 +54,11 @@
           />
         </div>
         <div class="pt-4">
-          <Button :label="'Generate new key'" @btn-click="genPreKey" />
+          <Button :label="'Generate keys'" @btn-click="genKeys" />
         </div>
       </div>
       
-      <div class="pt-4">
+      <div class="pt-6">
         <Input
           :placeholder="'(0 to disable)'"
           :label="'Bandwidth (Megabytes)'"
@@ -120,8 +115,10 @@ export default {
   data() {
     return {
       privKey: '',
+      shownPriv: '',
       pubKey: '',
       preKey: '',
+      shownPre: '',
       bw: '',
       bwFieldError: false,
       pubKeyError: false,
@@ -177,7 +174,8 @@ export default {
 
   methods: {
     async genPubPrivKey() {
-      for (let i = 0; i < 20; i++) {
+      this.shownPriv = ''
+      for (let i = 0; i < 10; i++) {
         await this.sleep(75)
 
         const privKeyArray = generatePrivateKey()
@@ -185,14 +183,21 @@ export default {
 
         this.privKey = keyToBase64(privKeyArray)
         this.pubKey = keyToBase64(pubKeyArray)
+        this.shownPriv += '****'
       }
     },
     async genPreKey() {
-      for (let i = 0; i < 20; i++) {
+      this.shownPre = ''
+      for (let i = 0; i < 10; i++) {
         await this.sleep(75)
         const preKeyArray = generatePresharedKey()
         this.preKey = keyToBase64(preKeyArray)
+        this.shownPre += '****'
       }
+    },
+    genKeys() {
+      this.genPubPrivKey()
+      this.genPreKey()
     },
     submit() {
       if (this.serverSelected === '') {
