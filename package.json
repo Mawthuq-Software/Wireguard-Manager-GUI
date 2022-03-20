@@ -12,21 +12,21 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
-    "core-js": "^3.15.1",
+    "core-js": "^3.21.1",
     "nuxt": "^2.15.7",
     "qrcode.vue": "^1.7.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.14.7",
+    "@babel/eslint-parser": "^7.17.0",
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/storybook": "^4.2.0",
-    "@nuxtjs/tailwindcss": "^4.2.0",
+    "@nuxtjs/storybook": "^4.3.0",
+    "@nuxtjs/tailwindcss": "^4.2.1",
     "eslint": "^7.29.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.12.1",
-    "postcss": "^8.3.11",
-    "prettier": "^2.3.2"
+    "postcss": "^8.4.12",
+    "prettier": "^2.6.0"
   }
 }
