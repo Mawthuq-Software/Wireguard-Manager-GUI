@@ -1,8 +1,15 @@
 module.exports = {
   purge: {
-    enabled: false,
+    enabled: true,
+
+    options: {
+      safelist: {
+        greedy: [/primary*/, /secondary*/, /background*/, /success*/, /warning*/,
+          /danger*/, /inactive*/]
+      },
+    },
+    content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   },
-  darkMode: false, // or 'media' or 'class'
   theme: {
     screens: {
       sm: '480px',
@@ -74,7 +81,6 @@ module.exports = {
     borderRadius: ['first', 'last'],
     borderStyle: ['first', 'last'],
     borderWidth: ['first', 'last'],
-    extend: {},
   },
   plugins: [],
 }
