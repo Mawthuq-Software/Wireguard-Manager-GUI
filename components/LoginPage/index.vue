@@ -17,7 +17,7 @@
 </template>
 <script>
 import LoginForm from '../LoginForm'
-import jsonVal from '../../template.json'
+import jsonVal from '../../config.json'
 import Alert from '../Alert'
 
 export default {

@@ -60,7 +60,7 @@ import Input from '../Input'
 import Button from '../Button'
 // import Dropdown from '../Dropdown'
 import Alert from '../Alert'
-import jsonVal from '../../template.json'
+import jsonVal from '../../config.json'
 
 export default {
   name: 'ModifyKeyForm',

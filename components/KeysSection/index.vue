@@ -61,7 +61,7 @@ import Input from '../Input'
 import Dropdown from '../Dropdown'
 import KeyGeneratorForm from '../KeyGeneratorForm'
 import ModifyKeyForm from '../ModifyKeyForm'
-import jsonVal from '../../template.json'
+import jsonVal from '../../config.json'
 
 export default {
   name: 'KeysSection',
