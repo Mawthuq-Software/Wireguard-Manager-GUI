@@ -1,11 +1,11 @@
 {
   "directAccess": {
-    "EU2": {
-      "url": "https://eu2.raspberrytech.one:8444",
+    "Server1": {
+      "url": "https://server.one:8444",
       "auth": "ABCDEFG"
     },
-    "EU1": {
-      "url": "https://eu1.raspberrytech.one:8444",
+    "Server2": {
+      "url": "https://server.two:8444",
       "auth": "ABCDEFG"
     }
   }
