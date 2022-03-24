@@ -1,69 +1,61 @@
-# wireguard-manager-gui
+[![Discord](https://img.shields.io/discord/900096719482654780?color=D6AD5B&labelColor=131313&style=for-the-badge&label=Discord&logo=discord)](https://discord.gg/fXMzVqb3qB "Chat and get support from the team and community.")
+[![Deploy with Netlify](https://img.shields.io/netlify/b2899904-db14-410a-8821-a9c864911ccc?color=D6AD5B&labelColor=131313&style=for-the-badge&label=Deploy_to_Netlify&logo=netlify)](https://app.netlify.com/start/deploy?repository=https://gitlab.com/mawthuq-software/wireguard-manager-gui)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgitlab.com%2Fmawthuq-software%2Fwireguard-manager-gui&redirect-url=https%3A%2F%2Fgitlab.com%2Fmawthuq-software%2Fwireguard-manager-gui)
 
-## Build Setup
 
+# Wireguard Manager GUI
+
+Wireguard Manager GUI is used to interact with multiple backend [Wireguard Manager and API servers](https://github.com/Mawthuq-Software/wireguard-manager-and-api).
+
+
+Preview the front-end [here](https://mawthuq-wg-manager-gui.netlify.app/) (the back-end is not running)
+## Content
+- [Wireguard Manager GUI](#wireguard-manager-gui)
+  - [Content](#content)
+  - [Deployment](#deployment)
+    - [Building from source](#building-from-source)
+  - [Configuration](#configuration)
+  - [Security](#security)
+## Deployment
+
+We recommend [building from source](#building-from-source) and running the server locally on your machine. Currently this project is not secure to run remotely as there is no authentication.
+
+The easiest way to get up and running is by deploying to Vercel or Netlify. Tap the button at the top of this readme to fork the repo and deploy the site for free. 
+
+**Important:** Despite this being the easiest method we do **not** recommend it as there is no form of authentication and anyone with your URL can perform functions on your API server.
+
+Proceed to the [configuration](#configuration) section.
+### Building from source
+
+1. Git clone this repository to a local machine
+2. Enter the repo directory by using: ``cd (directory-name)``
+   
+3. Run the commands below:
 ```bash
 # install dependencies
-$ npm install
-
-# serve with hot reload at localhost:3000
-$ npm run dev
+npm install
 
 # build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
+npm run build
+npm run start
 ```
+4. If you would like to run the development server instead, use: ``npm run dev``
+5. Proceed to the configuration section and configure your server.
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## Configuration
+1. Copy the ``template.json`` file and paste it as ``config.json`` in the same directory.
+2. In the ``config.json`` there are the following variables:
+   
+| Variable | Purpose | Type |
+| ------------ | ------------ | ------------ |
+|directAccess|The method of transfer. Communicates directly with the endpoints|``object``|
+|directAccess.ServerName|The name of the server. Must be unique.|``object``|
+|directAccess.ServerName.url|The URL of the Wireguard Manager and API server|``string``|
+|directAccess.ServerName.auth|The Authorization token for the Wireguard Manager and API server|``string``|
+## Security
 
-## Special Directories
+As emphasised before, this project is not currently secure as there is no authentication taking place on the front-end and the user. This is something that would be implemented at a later date, so for now its best to use this locally (without port forward, that just increases risk again.)
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
-
-### `assets`
-
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
-
-### `components`
-
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+TLDR: Use this project locally. Manage your keys locally.
 
 
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
