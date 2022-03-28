@@ -208,6 +208,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
 
@@ -249,6 +250,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
         const response = res.data.response
@@ -283,6 +285,7 @@ export default {
             authorization: serverAuth,
             'Content-Type': 'application/json',
           },
+          timeout: 3000,
           data: {
             keyID: String(this.keyID),
           },
@@ -328,6 +331,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
         const response = res.data.response
