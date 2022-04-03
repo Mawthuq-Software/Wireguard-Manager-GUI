@@ -4,6 +4,8 @@
 
 
 # Wireguard Manager GUI
+![Key Table](docs/images/keysTable.png)
+
 
 Wireguard Manager GUI is used to interact with multiple backend [Wireguard Manager and API servers](https://github.com/Mawthuq-Software/wireguard-manager-and-api).
 
@@ -20,7 +22,7 @@ Preview the front-end [here](https://mawthuq-wg-manager-gui.netlify.app/) (the b
   - [Configuration](#configuration)
   - [Security](#security)
 ## Deployment
-
+![Key Generator](docs/images/generator.png)
 We recommend [building from source](#building-from-source) and running the server locally on your machine. Currently this project is not secure to run remotely as there is no authentication.
 
 The easiest way to get up and running is by deploying to Vercel or Netlify. Tap the button at the top of this readme to fork the repo and deploy the site for free. 
