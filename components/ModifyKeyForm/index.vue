@@ -22,7 +22,12 @@
           </svg>
         </div>
       </div>
-
+      <div class="pt-2">
+        <p class="text-white font-bold">Bandwidth Used: {{ bwUsed }} MB</p>
+        <p class="text-white font-bold pt-1">
+          Bandwidth Limit: {{ bwLimit }} MB
+        </p>
+      </div>
       <div class="pt-4">
         <Input
           :placeholder="'(0 for unlimited)'"
@@ -80,6 +85,14 @@ export default {
       default: 1000000,
     },
     keyEnabled: {
+      type: String,
+      default: '',
+    },
+    bwLimit: {
+      type: String,
+      default: '',
+    },
+    bwUsed: {
       type: String,
       default: '',
     },
@@ -168,7 +181,6 @@ export default {
     },
     updateBW(bw) {
       this.bw = bw
-      console.log(this.keyEnabled, 'SSSS')
     },
     sleep(ms) {
       return new Promise((resolve) => {
@@ -208,6 +220,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
 
@@ -249,6 +262,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
         const response = res.data.response
@@ -283,6 +297,7 @@ export default {
             authorization: serverAuth,
             'Content-Type': 'application/json',
           },
+          timeout: 3000,
           data: {
             keyID: String(this.keyID),
           },
@@ -328,6 +343,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000,
           }
         )
         const response = res.data.response

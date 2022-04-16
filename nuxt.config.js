@@ -34,6 +34,9 @@ export default {
     '@nuxtjs/tailwindcss',
   ],
 
+  server: {
+    host: '0.0.0.0', // default: localhost
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios'],
 
