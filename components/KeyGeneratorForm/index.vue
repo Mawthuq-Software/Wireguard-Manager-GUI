@@ -253,6 +253,7 @@ export default {
             headers: {
               authorization: serverAuth,
             },
+            timeout: 3000
           }
         )
         const allowedIPs = res.data.allowedIPs

@@ -39,9 +39,12 @@
     <div :class="outerModifyFormClass">
       <div :class="modifyFormClass">
         <ModifyKeyForm
+          :id="modifyFormID"
           :server-i-d="currentServerID"
           :key-i-d="currentKeyID"
           :key-enabled="keyEnabled"
+          :bw-limit="bwLimit"
+          :bw-used="bwUsed"
           @closeKeyGen="toggleModifyForm"
           @success-change="getKeys"
         />
@@ -71,7 +74,7 @@ export default {
     Input,
     KeyGeneratorForm,
     ModifyKeyForm,
-    Dropdown
+    Dropdown,
   },
   data() {
     return {
@@ -97,6 +100,9 @@ export default {
       currentServerID: '',
       currentKeyID: '',
       keyEnabled: '',
+      modifyFormID: 999999,
+      bwUsed: '-',
+      bwLimit: '-',
     }
   },
   computed: {
@@ -220,8 +226,10 @@ export default {
       // Hard code the array values as we know the positison
       this.currentKeyID = row[0]
       this.currentServerID = row[1]
+      this.getBWAPI(this.currentServerID, this.currentKeyID)
       this.keyEnabled = row[4]
       this.modifyFormOpen = true
+      this.modifyFormID++
     },
     toggleForm() {
       this.formOpen = false
@@ -297,6 +305,41 @@ export default {
           }
           this.showBanner('error')
         }
+      }
+    },
+    async getBWAPI(serverID, keyID) {
+      const serverURL = jsonVal.directAccess[serverID].url
+      const serverAuth = jsonVal.directAccess[serverID].auth
+      console.log('HERE')
+      try {
+        const res = await this.$axios.post(
+          serverURL + '/manager/subscription',
+          {
+            keyID: String(keyID),
+          },
+          {
+            headers: {
+              authorization: serverAuth,
+            },
+            timeout: 3000,
+          }
+        )
+        // const response = res.data.response
+
+        if (res.status === 202) {
+          this.bwLimit = res.data.bandwidthLimit
+          this.bwUsed = res.data.bandwidthUsed
+        }
+      } catch (err) {
+        if (err.response) {
+          this.infoLabel = err.response.data.response
+          console.log(err.response.data)
+          console.log(err.response.status)
+          console.log(err.response.headers)
+        } else {
+          this.infoLabel = 'Unable to connect to server.'
+        }
+        this.showBanner('error')
       }
     },
   },

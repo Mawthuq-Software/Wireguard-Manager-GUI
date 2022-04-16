@@ -4,6 +4,7 @@
 
 
 # Wireguard Manager GUI
+![Key Table](docs/images/keysTable.png)
 
 Wireguard Manager GUI is used to interact with multiple backend [Wireguard Manager and API servers](https://github.com/Mawthuq-Software/wireguard-manager-and-api).
 
@@ -13,10 +14,14 @@ Preview the front-end [here](https://mawthuq-wg-manager-gui.netlify.app/) (the b
 - [Wireguard Manager GUI](#wireguard-manager-gui)
   - [Content](#content)
   - [Deployment](#deployment)
+    - [Docker](#docker)
+      - [Starting the container](#starting-the-container)
+      - [Editing your configuration](#editing-your-configuration)
     - [Building from source](#building-from-source)
   - [Configuration](#configuration)
   - [Security](#security)
 ## Deployment
+![Key Generator](docs/images/generator.png)
 
 We recommend [building from source](#building-from-source) and running the server locally on your machine. Currently this project is not secure to run remotely as there is no authentication.
 
@@ -25,6 +30,21 @@ The easiest way to get up and running is by deploying to Vercel or Netlify. Tap 
 **Important:** Despite this being the easiest method we do **not** recommend it as there is no form of authentication and anyone with your URL can perform functions on your API server.
 
 Proceed to the [configuration](#configuration) section.
+
+###  Docker
+Using docker is another quick way to get the project up and running on your machine.
+#### Starting the container
+1. ``git clone`` this repository
+2. ``cd`` into the new directory
+3. Copy the ``template.json`` and place it as ``config.json`` in the same directory
+4. Edit the [configuration](#configuration) 
+5. ``docker-compose up`` the project, this will build the docker image and run it. Use ``docker-compose -d`` to detach from the terminal. I recommend before detaching that you check everything builds fine.
+
+#### Editing your configuration
+After making any changes to ``config.json``, you will need to rebuild before bringing the docker-compose back up.
+
+1. ``docker-compose build``
+2. ``docker-compose up``. Use ``docker-compose -d`` to detach from the terminal.
 ### Building from source
 
 1. Git clone this repository to a local machine
